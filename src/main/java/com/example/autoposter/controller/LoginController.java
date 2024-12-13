@@ -1,4 +1,4 @@
-package controller;
+package com.example.autoposter.controller;
 
 
 import org.springframework.security.core.Authentication;
