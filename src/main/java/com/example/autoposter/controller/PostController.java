@@ -4,7 +4,6 @@ import com.example.autoposter.dto.request.PostRequest;
 import com.example.autoposter.dto.response.ApiResponse;
 import com.example.autoposter.dto.response.PostResponse;
 import com.example.autoposter.service.post.PostInterface;
-import com.example.autoposter.service.post.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,12 +32,12 @@ public class PostController {
         return ResponseEntity.ok().body(apiResponse);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> getPostByPostId(PostRequest postRequest, @PathVariable String id) {
-        PostResponse response = postInterface.schedulePost(postRequest);
-        ApiResponse<?> apiResponse = ApiResponse.builder().code("00").message("").success(true).data(response).build();
-        return ResponseEntity.ok().body(apiResponse);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ApiResponse<?>> getPostByPostId(PostRequest postRequest, @PathVariable String id) {
+//        PostResponse response = postInterface.schedulePost(postRequest);
+//        ApiResponse<?> apiResponse = ApiResponse.builder().code("00").message("").success(true).data(response).build();
+//        return ResponseEntity.ok().body(apiResponse);
+//    }
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<?>> getAllPostForUser(PostRequest postRequest) {
@@ -47,12 +46,12 @@ public class PostController {
         return ResponseEntity.ok().body(apiResponse);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> deletePostById(PostRequest postRequest, @PathVariable String id) {
-        PostResponse response = postInterface.schedulePost(postRequest);
-        ApiResponse<?> apiResponse = ApiResponse.builder().code("00").message("").success(true).data(response).build();
-        return ResponseEntity.ok().body(apiResponse);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ApiResponse<?>> deletePostById(PostRequest postRequest, @PathVariable String id) {
+//        PostResponse response = postInterface.schedulePost(postRequest);
+//        ApiResponse<?> apiResponse = ApiResponse.builder().code("00").message("").success(true).data(response).build();
+//        return ResponseEntity.ok().body(apiResponse);
+//    }
 
 
 }

@@ -1,12 +1,12 @@
 package com.example.autoposter.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApiResponse<T> {
 
     private String code;
@@ -14,10 +14,5 @@ public class ApiResponse<T> {
     private String message;
     private T data;
 
-    public ApiResponse(String code, String message, T data, boolean success) {
-        this.code = code;
-        this.success = success;
-        this.message = message;
-        this.data = data;
-    }
+
 }

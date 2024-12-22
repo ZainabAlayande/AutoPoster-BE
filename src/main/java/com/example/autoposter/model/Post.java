@@ -22,8 +22,13 @@ public class Post {
     private String title;
     private String content;
     private String imageUrl;
+
+    @ElementCollection
     private List<String> tags;
+
+    @ElementCollection
     private List<String> hashtags;
+
     private String authorEmail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
