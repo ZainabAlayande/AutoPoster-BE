@@ -1,4 +1,4 @@
-package com.example.autoposter.service;
+package com.example.autoposter.service.post;
 
 import com.example.autoposter.dto.request.PostRequest;
 import com.example.autoposter.dto.response.PostResponse;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static com.example.autoposter.service.PostUtils.buildPostResponse;
-import static com.example.autoposter.service.PostUtils.validateRequest;
+import static com.example.autoposter.service.post.PostUtils.buildPostResponse;
+import static com.example.autoposter.service.post.PostUtils.validateRequest;
 
 @Service
-public class PostService {
+public class PostService implements PostInterface {
 
     private final PostRepository postRepository;
 
@@ -21,6 +21,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    @Override
     public PostResponse schedulePost(PostRequest request) {
         validateRequest(request);
         Post savedPost = buildAndSavePost(request);
