@@ -16,7 +16,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/login-successful").permitAll() // Allow public access to these endpoints
+                        .requestMatchers("/", "/login", "/login-successful", "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html").permitAll() // Allow public access to these endpoints
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
                 .oauth2Login(oauth2 -> oauth2
