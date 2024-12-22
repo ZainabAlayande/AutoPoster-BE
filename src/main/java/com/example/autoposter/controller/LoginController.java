@@ -32,26 +32,5 @@ public class LoginController {
 
 
 
-//    @GetMapping("/")
-//    public String home() {
-//        return "Welcome to LinkedIn Login!";
-//    }
-//
-//    @GetMapping("/dashboard")
-//    public String dashboard(Authentication authentication) {
-//        OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-//        String name = oauthUser.getAttribute("localizedFirstName");
-//        String email = oauthUser.getAttribute("emailAddress");
-//
-//        return "Hello, " + name + "! Your email is " + email;
-//    }
-//
-//    @GetMapping("/login-success")
-//    public String loginSuccess(Authentication authentication) {
-//        OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-//        String name = oauthUser.getAttribute("localizedFirstName");
-//        return "Login successful! Welcome, " + name;
-//    }
-
 
 }
