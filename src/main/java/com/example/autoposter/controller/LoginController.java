@@ -17,11 +17,6 @@ public class LoginController {
     }
 
 
-    @GetMapping("/login-successful")
-    public String successfulLogin() {
-        return "Authentication successful!";
-    }
-
     @GetMapping("/dashboard")
     public String dashboard(Authentication authentication) {
         OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
