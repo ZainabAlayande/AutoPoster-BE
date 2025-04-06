@@ -7,6 +7,7 @@ import lombok.*;
 @ToString
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class LoginResponse {
 
     private String id;
