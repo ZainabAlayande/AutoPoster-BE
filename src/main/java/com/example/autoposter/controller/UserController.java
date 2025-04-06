@@ -22,12 +22,12 @@ public class UserController {
 
     UserService userService;
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<ApiResponse<?>> registerUser(@RequestBody CreateUserRequest request) {
-        CreateUserResponse response = userService.createUser(request);
-        ApiResponse<?> apiResponse = ApiResponse.builder().code("00").success(true).message("Sign up successful")
-                .data(response).build();
-        return ResponseEntity.ok(apiResponse);
-    }
+//    @PostMapping("/sign-up")
+//    public ResponseEntity<ApiResponse<?>> registerUser(@RequestBody CreateUserRequest request) {
+//        CreateUserResponse response = userService.createUser(request);
+//        ApiResponse<?> apiResponse = ApiResponse.builder().code("00").success(true).message("Sign up successful")
+//                .data(response).build();
+//        return ResponseEntity.ok(apiResponse);
+//    }
 
 }
