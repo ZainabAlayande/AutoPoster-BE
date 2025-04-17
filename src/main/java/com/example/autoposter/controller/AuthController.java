@@ -16,22 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
 
     private final AuthService authService;
 
-    @PostMapping("/linkedin")
-    public ResponseEntity<ApiResponse<?>> handleLinkedInCallback(@Valid @RequestBody LinkedInAuthRequest request) {
-        LoginResponse response = authService.generateLinkedInAccessToken(request);
-        ApiResponse<?> apiResponse = ApiResponse.builder()
-                .message("Login Successful")
-                .success(true)
-                .data(response)
-                .build();
-        return ResponseEntity.ok(apiResponse);
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
+
+    @PostMapping("/linkedin")
+    public ResponseEntity<ApiResponse<?>> handleLinkedInCallback(@Valid @RequestBody LinkedInAuthRequest request)  {
+        System.out.println("8");
+        LoginResponse response = authService.generateLinkedInAccessToken(request);
+        System.out.println(response.toString());
+        System.out.println("9");
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse.Builder<>().message("Login Successful")
+                .success(true).data(response).build());
+    }
+
+
+
 
 
 

@@ -8,14 +8,10 @@ import org.springframework.stereotype.Service;
 public class PostUtils {
 
 
-    public static void validateRequest(PostRequest request) {
-
-    }
-
     public static PostResponse buildPostResponse(Long postId) {
         PostResponse postResponse = new PostResponse();
         postResponse.setId(String.valueOf(postId));
-        postResponse.setMessage("Success");
+        postResponse.setMessage("Post Scheduled");
         return postResponse;
     }
 }

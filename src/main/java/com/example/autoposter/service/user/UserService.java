@@ -9,4 +9,5 @@ public interface UserService {
 
     CreateUserResponse createUser(CreateUserRequest createUserRequest, Map<String, String> map);
 
+    String getUserLinkedin_AccessToken();
 }

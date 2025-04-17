@@ -1,80 +1,58 @@
 package com.example.autoposter.security;
 
-import io.jsonwebtoken.*;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.interfaces.Claim;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.Map;
-import java.util.function.Function;
-
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 @Component
 public class JwtUtil {
 
-
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.access-token.expiration}")
-    private long accessTokenExpiration; // in milliseconds
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${jwt.refresh-token.expiration}")
-    private long refreshTokenExpiration; // in milliseconds
 
-    // Generate Access Token
-    public String generateAccessToken(String username) {
-        return createToken(new HashMap<>(), username, accessTokenExpiration);
+    public Map<String, Claim> extractClaimsFromToken(String token)  {
+        DecodedJWT decodedJwt = validateToken(token);
+        return decodedJwt.getClaims();
     }
 
-    // Generate Refresh Token
-    public String generateRefreshToken(String username) {
-        return createToken(new HashMap<>(), username, refreshTokenExpiration);
+    public DecodedJWT validateToken(String token){
+        logger.info("This is the token " + token);
+        return JWT.require(Algorithm.HMAC512(secret.getBytes()))
+                .build().verify(token);
     }
 
-    private String createToken(Map<String, Object> claims, String subject, long expiration) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+    public String generateAccessToken(String email) {
+        return JWT.create().withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plusSeconds(86000L))
+                .withClaim("email", email)
+                .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
-    // Extract username (subject)
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
 
-    // Extract any claim
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    // Validate token
-    public boolean isTokenValid(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }
-
-    public long getAccessTokenExpiry() {
-        return accessTokenExpiration;
-    }
-
-    public long getRefreshTokenExpiry() {
-        return refreshTokenExpiration;
+    public String generateRefreshToken(String email) {
+        return JWT.create().withIssuedAt(Instant.now()).withExpiresAt(Instant.now()
+                        .plusSeconds(86000L))
+                .withClaim("email", email)
+                .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
 
 }
+
+
+
+
+
+
+

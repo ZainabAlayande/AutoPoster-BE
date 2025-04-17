@@ -59,38 +59,71 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse generateLinkedInAccessToken(LinkedInAuthRequest request) {
+        System.out.println("1");
         Map<String, String> map = exchangeCodeForAccessToken(request.getCode());
+        System.out.println("2");
         LinkedInUserInfo userInfo = fetchLinkedInUserProfile(map.get("access_token"));
+        System.out.println("3");
         CreateUserRequest createUserRequest = mapToCreateUserRequest(userInfo);
+        System.out.println("4");
         CreateUserResponse user = userService.createUser(createUserRequest, map);
+        System.out.println("5");
         String jwtAccessToken = jwtUtil.generateAccessToken(user.getEmail());
+        System.out.println("6");
         String jwtRefreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+        System.out.println("7");
         return buildLoginResponse(user, jwtAccessToken, jwtRefreshToken);
     }
 
 
     private Map<String, String> exchangeCodeForAccessToken(String code) {
+        System.out.println("a");
         Map<String, String> result = new HashMap<>();
+        System.out.println("b");
         HttpHeaders headers = new HttpHeaders();
+        System.out.println("c");
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        System.out.println("d");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        System.out.println("e");
         params.add("grant_type", grantType);
+        System.out.println("af");
         params.add("code", code);
+        System.out.println("g");
         params.add("client_id", clientId);
+        System.out.println("h");
         params.add("client_secret", clientSecret);
+        System.out.println("i");
         params.add("redirect_uri", redirectUri);
-
+        System.out.println("j");
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+        System.out.println("k");
+
         ResponseEntity<Map> response = restTemplate.exchange(accessTokenUrl, HttpMethod.POST, requestEntity, Map.class);
+        System.out.println("l");
+        System.out.println("response.getBody():: " + response.getBody());
 
         String accessToken = (String) response.getBody().get("access_token");
-        long expiresIn = (long) response.getBody().get("expires_in");
+        System.out.println("m");
+        Integer expiresIn = (Integer) response.getBody().get("expires_in");
+        System.out.println("n");
         String refreshToken = (String) response.getBody().get("refresh_token");
-        long refreshTokenExpiresIn = (long) response.getBody().get("refresh_token_expires_in");
+        String linkedin_urn = (String) response.getBody().get("sub");
+        System.out.println("linkedin_urn:: " + linkedin_urn);
+        System.out.println("o");
 
-        result.put("access_token", accessToken);result.put("expires_in", String.valueOf(expiresIn));
+        Integer refreshTokenExpiresIn = (Integer) response.getBody().get("refresh_token_expires_in");
+        System.out.println("p");
+
+        result.put("linkedin_urn", linkedin_urn);
+        result.put("access_token", accessToken);
+        result.put("expires_in", String.valueOf(expiresIn));
+        System.out.println("q");
+
         result.put("refresh_token", refreshToken);result.put("refresh_token_expires_in", String.valueOf(refreshTokenExpiresIn));
+        System.out.println("r");
+
         return result;
     }
 
@@ -110,10 +143,11 @@ public class AuthServiceImpl implements AuthService {
 
 
     private LoginResponse buildLoginResponse(CreateUserResponse user, String accessToken, String refreshToken) {
-        return LoginResponse.builder().id(user.getId()).name(user.getName()).email(user.getEmail())
+        return new LoginResponse.Builder().id(user.getId()).name(user.getName()).email(user.getEmail())
+                .profilePicture(user.getProfilePicture())
                 .accessToken(accessToken).refreshToken(refreshToken)
-                .accessTokenExpiresIn(System.currentTimeMillis() + jwtUtil.getAccessTokenExpiry())
-                .refreshTokenExpiresIn(System.currentTimeMillis() + jwtUtil.getRefreshTokenExpiry()).build();
+                .accessTokenExpiresIn(System.currentTimeMillis() + 600L)
+                .refreshTokenExpiresIn(System.currentTimeMillis() + 900L).build();
     }
 
     private static LinkedInUserInfo getLinkedInUserInfo(ResponseEntity<Map> userInfoResponse) {

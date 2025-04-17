@@ -1,13 +1,6 @@
 package com.example.autoposter.dto.response;
 
-import lombok.*;
 
-@Getter
-@Setter
-@ToString
-@Builder
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class CreateUserResponse {
 
     private String id;
@@ -15,4 +8,47 @@ public class CreateUserResponse {
     private String email;
     private String profilePicture;
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+
+    @Override
+    public String toString() {
+        return "CreateUserResponse{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                '}';
+    }
 }
